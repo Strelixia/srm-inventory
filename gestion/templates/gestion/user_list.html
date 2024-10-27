@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Liste des utilisateurs</title>
+</head>
+<body>
+    <h1> Liste des utilisateurs</h1>
+    <a href="{% url 'user_create'%}"> Create a new user</a>
+    <ul>
+        {% for user in users %}
+            <li> <a href="{% url 'user_detail' user.id %}">{{ user.username}}</a> - {{ user.mail}}
+                 <a href="{% url 'user_update' user.id %}"> Modifier</a>
+                 <a href="{% url 'user_delete' user.id %}"> Delete</a>
+            </li>
+        {% enfor %}
+        </ul> 
+</body>      
+</html>

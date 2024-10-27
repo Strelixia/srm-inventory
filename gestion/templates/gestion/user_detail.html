@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Detail de l'utilisateurs</title>
+</head>
+<body>
+    <h1> {{ user.username}}</h1>
+    <p> Email: {{ user.email}}</p>
+    <p>Rôle: {{ user.role}}</p>
+   
+    <a href="{% url 'user_list' user.id %}">Retour à la liste </a>
+    <a href="{% url 'user_update' user.id %}"> Modifier</a>
+    <a href="{% url 'user_delete' user.id %}"> Delete</a>
+            
+</body>      
+</html>
