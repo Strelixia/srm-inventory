@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Product, Order
+from .models import User
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -12,3 +12,6 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError('Cet email est déjà utilisé.')
         return email
 
+class ConnexionForm(forms.Form):
+    username = forms.CharField(label= "Nom d'utilisateur", max_length= 100)
+    password = forms.CharField(label= "Mot de passe", widget = forms.PasswordInput)

@@ -1,0 +1,19 @@
+<h1> Se connecter</h1>
+{% if error %}
+<p><strong> User doesn't exist or false password</strong></p>
+{% endif %}
+{% if user.is_authentificated %} you are connected,{{user.username}}
+{% else %}
+<form method="post" action=".">{% csrf_token %}
+    <label for ="username"> Username</label>
+    <input type="text" name="username" required>
+    <label for ="password"> Password</label>
+    <input widget="forms.PasswordInput" name="password" required>
+<button type="submit"> Connexion </button>
+</form>
+{% endif %}
+
+
+
+
+
