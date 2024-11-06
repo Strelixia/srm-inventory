@@ -1,7 +1,21 @@
 <h1> Welcome at supplier's Dashboard</h1>
 
 <form method="post" action=".">{% csrf_token %}
-    <button  type="submit"> Products </button>
-    <button  type="submit"> Orders </button>
-    <button  type="submit"> Delivery </button>
+    <a href="{% url 'product'  %}" class="button"> Products </a>
+    <a href="{% url 'product'  %}" class="button"> Orders </a>
+    <a href="{% url 'product'  %}" class="button"> Delivery </a>
+
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0e0e0e;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px;
+        }   
+        
 </form>
