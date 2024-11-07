@@ -41,12 +41,31 @@ def supplier_dashboard(request):
 def buyer_dashboard(request):
     return render(request, 'buyer_dashboard.html')
 @login_required
-def product(request):
+def supplier_products(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        
+        print(name,description,price)
+        Product.objects.create(name = name,description = description,price = price, supplier = request.user)
+        return redirect('supplier_products')
     products = Product.objects.all()
-    if request.method == "GET":
-        return render(request, 'supplier_products.html')
-    elif request.method == "POST":
-        return render(request, 'supplier_products.html', {'products': products})
+        
+    return render(request, 'supplier_products.html', {'products': products})    
+            
+    
+
+
+
+
+
+
+
+
+
+    
+
 
 '''
 class ProductView(generic.DetailView):

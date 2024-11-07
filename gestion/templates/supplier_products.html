@@ -5,13 +5,32 @@
     <title> Liste des produits</title>
 </head>
 <body>
-    <form method="post" action=".">{% csrf_token %}
+
+
+    <form method="post" action="">{% csrf_token %}
+    
+        <p><strong> Add a new product </strong></p> 
+            <label for ="name"> Name</label> 
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for ="description"> Description</label>
+            <textarea id="description" name="description" required></textarea><br><br>
+
+            <label for ="price"> Price</label>
+            <input type="number" step="0.01"  id="price" name="price" required><br><br>
+
+            <div>
+             <button type="submit"> Add product </button>
+            </div>
+        
+    </form>
         <table>
             <thead>
+                
                 <tr>
                     <th>Nom</th>
                     <th>Description</th>
-                    <th>Prix</th>
+                    <th>Price</th>
                     <th>Supplier</th>
                 </tr>
             </thead>
@@ -21,7 +40,7 @@
                     <td>{{product.name}}</td>
                     <td>{{product.description}}</td>
                     <td>{{product.price}}</td>
-                    <td>{{product.Supplier}}</td>
+                    <td>{{product.supplier.username}}</td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -31,13 +50,25 @@
                 {% endfor %}
             </tbody>
         </table>
-        
-    </form>
-    <style>
-        table {
-            display: table;
-            background-color: rgb(90, 160, 201);
-        }
-    </style>
 </body>      
 </html>
+    
+
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4f4f58;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px;
+        }   
+        table {
+            display: table;
+            background-color: rgb(28, 129, 156);
+            border: 10;
+        }
+    </style>

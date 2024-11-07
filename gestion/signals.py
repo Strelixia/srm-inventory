@@ -11,3 +11,4 @@ def redirect_user_based_on_role(sender, request, user, **kwargs):
         return redirect('supplier_dashboard.html')
     elif user.role == 'Buyer':
         return redirect('buyer_dashboard.html')
+
