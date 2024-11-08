@@ -1,6 +1,6 @@
 
 from django.views.generic import ListView 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -46,35 +46,25 @@ def supplier_products(request):
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
-        
         print(name,description,price)
         Product.objects.create(name = name,description = description,price = price, supplier = request.user)
         return redirect('supplier_products')
     products = Product.objects.all()
         
-    return render(request, 'supplier_products.html', {'products': products})    
-            
+    return render(request, 'supplier_products.html', {'products': products})         
+
+@login_required
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id =product_id)
+    if request.method =='POST':
+        product.delete()
+        return redirect('supplier_products')
     
+@login_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method =='POST':
+        product.save()
+        return redirect('edit_product', product_id=product_id)
+    return render(request, 'edit_product.html', {'product': product})
 
-
-
-
-
-
-
-
-
-    
-
-
-'''
-class ProductView(generic.DetailView):
-    model = Product
-    template_name = "gestion/product.html"
-    def get_queryset(self):
-    
-        Print all products
-    
-        return Product.objects.all()
-'''
-    

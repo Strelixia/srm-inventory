@@ -1,0 +1,25 @@
+<form method="post" action="edit_product">
+    <table>
+        <thead>
+            
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Price</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+                
+            <tr>
+                <td><input value="{{product.name}}"> </td>
+                <td><input value="{{product.description}}"></td>
+                <td><input value="{{product.price}}"></td>
+            </tr>
+                <form method="post" action="{% url 'supplier_products' %}">{% csrf_token %}
+                    <button type="submit">   save product </button> 
+                </form>
+        </tbody>
+        
+    </table>
+</form>
