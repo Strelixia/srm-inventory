@@ -1,4 +1,6 @@
-<form method="post" action="edit_product">
+
+ 
+<form method="post" action="">{% csrf_token %}
     <table>
         <thead>
             
@@ -10,16 +12,14 @@
             </tr>
         </thead>
         <tbody>
-                
+              
             <tr>
-                <td><input value="{{product.name}}"> </td>
-                <td><input value="{{product.description}}"></td>
-                <td><input value="{{product.price}}"></td>
+                <td><input name="name" value="{{product.name}}"> </td>
+                <td><input name="description" value="{{product.description}}"></td>
+                <td><input name="price" value="{{product.price}}"></td>
             </tr>
-                <form method="post" action="{% url 'supplier_products' %}">{% csrf_token %}
-                    <button type="submit">   save product </button> 
-                </form>
+            
         </tbody>
-        
     </table>
+    <button>save product</button>
 </form>

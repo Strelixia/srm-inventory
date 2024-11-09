@@ -64,7 +64,13 @@ def delete_product(request, product_id):
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method =='POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        product.name = name
+        product.description= description
+        product.price= price
         product.save()
-        return redirect('edit_product', product_id=product_id)
+        return redirect('supplier_products')
     return render(request, 'edit_product.html', {'product': product})
 

@@ -47,11 +47,10 @@
 
                 </td>
                 <td>
-                    <form method="post" action="{% url 'edit_product' product.id %}">{% csrf_token %}
+                    <form method="get" action="{% url 'edit_product' product.id %}">{% csrf_token %}
                         <button type="submit"> Edit product </button> 
                     </form>
                 </td>
-                    
                 </tr>
                 {% empty %}
                 <tr>
