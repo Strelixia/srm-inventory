@@ -1,15 +1,15 @@
-<h1> Welcome at supplier's Dashboard</h1>
+<h1> Welcome at buyer's Dashboard</h1>
 
 <form method="post" action=".">{% csrf_token %}
-    <a href="{% url 'product'  %}" class="button"> Products </a>
-    <a href="{% url 'product'  %}" class="button"> Orders </a>
-    <a href="{% url 'product'  %}" class="button"> Delivery </a>
+    <a href="{% url 'buyer_inventory'  %}" class="button"> Inventory </a>
+    <a href="{% url 'buyer_inventory'  %}" class="button"> Orders </a>
+    <a href="{% url 'buyer_inventory'  %}" class="button"> Delivery </a>
 
     <style>
         .button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #0e0e0e;
+            background-color: #2005b5;
             color: white;
             text-align: center;
             text-decoration: none;

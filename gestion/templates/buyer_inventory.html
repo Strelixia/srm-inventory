@@ -2,16 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> Detail de l'utilisateurs</title>
+    <title> Liste des produits</title>
 </head>
 <body>
-    <h1> {{ user.username}}</h1>
-    <p> Email: {{ user.email}}</p>
-    <p>Rôle: {{ user.role}}</p>
-   
-    <a href="{% url 'user_list' user.id %}">Retour à la liste </a>
-    <a href="{% url 'user_update' user.id %}"> Modifier</a>
-    <a href="{% url 'user_delete' user.id %}"> Delete</a>
-            
-</body>      
+
+
+    <form method="post" action="">{% csrf_token %}
+    
+        <p><strong> Products in stock </strong></p> 
+            <label for ="product"> Product</label> 
+            <select name="product" id="product" required><br><br>
+                <option value="">Select a product</option>
+                {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for ="quantity"> Quantity</label>
+            <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+            <div>
+                <button type="submit"> Add product </button>
+            </div>
+    </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventory in inventory %}
+                <tr>
+                    <td>{{inventory.product.name}}</td>
+                    <td>{{inventory.quantity}}</td>
+                    <td>{{inventory.user.username}}</td>
+                
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No products available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</body>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button type="submit"> Déconnexion </button> 
+    </form>      
 </html>
+    
+
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4f4f58;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px;
+        }   
+        table {
+            display: table;
+            background-color: rgb(28, 129, 156);
+            border: 10;
+        }
+    </style>

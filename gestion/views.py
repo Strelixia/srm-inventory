@@ -2,7 +2,7 @@
 from django.views.generic import ListView 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
@@ -73,4 +73,32 @@ def edit_product(request, product_id):
         product.save()
         return redirect('supplier_products')
     return render(request, 'edit_product.html', {'product': product})
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+@login_required
+def buyer_inventory(request):
+    if request.method =='POST':
+        product_id = request.POST.get('product')
+        quantity = request.POST.get('quantity')
+        product =Product.objects.get(id = product_id)
+        print(product, quantity)
+        inventory = Inventory.objects.create(product = product, quantity = quantity, user = request.user)
+        return redirect('buyer_inventory')
+    products = Product.objects.all()
+    inventory = Inventory.objects.all()
+    return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory})
+
+
+@login_required
+def delete_inventory(request, inventory_id):
+    product = get_object_or_404(Inventory, id =inventory_id)
+    if request.method =='POST':
+        product.delete()
+        return redirect('buyer_inventory')
+
 
