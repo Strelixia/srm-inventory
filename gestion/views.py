@@ -102,9 +102,9 @@ def buyer_inventory(request):
 
 @login_required
 def delete_inventory(request, inventory_id):
-    product = get_object_or_404(Inventory, id = inventory_id)
+    inventory = get_object_or_404(Inventory, id = inventory_id)
     if request.method =='POST':
-        product.delete()
+        inventory.delete()
         return redirect('buyer_inventory')
 
 
