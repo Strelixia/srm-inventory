@@ -107,4 +107,12 @@ def delete_inventory(request, inventory_id):
         inventory.delete()
         return redirect('buyer_inventory')
 
-
+@login_required
+def edit_inventory(request, inventory_id):
+    inventory = get_object_or_404(Inventory, id = inventory_id)
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        inventory.quantity = quantity
+        inventory.save()
+        return redirect('buyer_inventory')
+    return render(request,'edit_inventory.html', {'inventory': inventory} )

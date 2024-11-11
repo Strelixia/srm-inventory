@@ -43,6 +43,11 @@
                         <button type="submit"> Delete </button> 
                     </form>
                     </td>
+
+                    <td> <form method="get" action="{% url 'edit_inventory' inventory.id %}">{% csrf_token %}
+                        <button type="submit"> Edit </button> 
+                    </form>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
