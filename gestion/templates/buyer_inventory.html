@@ -38,7 +38,11 @@
                     <td>{{inventory.product.name}}</td>
                     <td>{{inventory.quantity}}</td>
                     <td>{{inventory.user.username}}</td>
-                
+
+                    <td> <form method="post" action="{% url 'delete_inventory' inventory.id %}">{% csrf_token %}
+                        <button type="submit"> Delete </button> 
+                    </form>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

@@ -84,12 +84,16 @@ def logout_view(request):
 def buyer_inventory(request):
     if request.method =='POST':
         product_id = request.POST.get('product')
-        quantity = request.POST.get('quantity')
+        quantity = int(request.POST.get('quantity'))
         product =Product.objects.get(id = product_id)
-        if product == product_id:
-            quantity += quantity
         print(product, quantity) 
-        inventory = Inventory.objects.create(product = product, quantity = quantity, user = request.user)
+        if product_id and quantity:
+            existing_inventory = Inventory.objects.filter(product_id = product_id, user = request.user).first()
+            if existing_inventory:
+                existing_inventory.quantity += quantity
+                existing_inventory.save()
+            else:
+                inventory = Inventory.objects.create(product = product, quantity = quantity, user = request.user)
         return redirect('buyer_inventory')
     products = Product.objects.all()
     inventory = Inventory.objects.all()
@@ -98,7 +102,7 @@ def buyer_inventory(request):
 
 @login_required
 def delete_inventory(request, inventory_id):
-    product = get_object_or_404(Inventory, id =inventory_id)
+    product = get_object_or_404(Inventory, id = inventory_id)
     if request.method =='POST':
         product.delete()
         return redirect('buyer_inventory')
