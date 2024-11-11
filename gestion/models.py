@@ -28,7 +28,7 @@ class Inventory(models.Model):
     quantity = models.IntegerField()
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     def __str__(self):
-         return self.quantity
+         return self.user
 
 class Order(models.Model):
     buyer = models.ForeignKey(User, on_delete= models.CASCADE, related_name='buyer_orders')

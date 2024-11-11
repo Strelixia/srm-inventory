@@ -86,6 +86,8 @@ def buyer_inventory(request):
         product_id = request.POST.get('product')
         quantity = request.POST.get('quantity')
         product =Product.objects.get(id = product_id)
+        if product == product_id:
+            quantity += quantity
         print(product, quantity) 
         inventory = Inventory.objects.create(product = product, quantity = quantity, user = request.user)
         return redirect('buyer_inventory')

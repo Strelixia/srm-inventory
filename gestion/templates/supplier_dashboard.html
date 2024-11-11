@@ -1,6 +1,5 @@
 <h1> Welcome at supplier's Dashboard</h1>
 
-<form method="post" action=".">{% csrf_token %}
     <a href="{% url 'supplier_products'  %}" class="button"> Products </a>
     <a href="{% url 'supplier_products'  %}" class="button"> Orders </a>
     <a href="{% url 'supplier_products'  %}" class="button"> Delivery </a>
@@ -18,4 +17,3 @@
             margin: 5px;
         }   
         </style>
-</form>

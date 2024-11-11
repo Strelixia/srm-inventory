@@ -40,19 +40,21 @@
                     <td>{{product.description}}</td>
                     <td>{{product.price}}</td>
                     <td>{{product.supplier.username}}</td>
-                </tr> 
+                    <td> <form method="post" action="{% url 'delete_product' product.id %}">{% csrf_token %}
+                            <button type="submit"> Delete </button> 
+                        </form>
+                    </td>
+                    <td>
+                        <form method="get" action="{% url 'edit_product' product.id %}">{% csrf_token %}
+                            <button type="submit"> Edit </button> 
+                        </form> 
+                    </td>
+                </tr>  
                 {% empty %}
                 <tr>
                     <td colspan="3">No products available.</td>
                 </tr>
                 {% endfor %}
-                <form method="post" action="{% url 'delete_product' product.id %}">{% csrf_token %}
-                    <button type="submit"> Delete </button> 
-                </form>
-
-                <form method="get" action="{% url 'edit_product' product.id %}">{% csrf_token %}
-                    <button type="submit"> Edit </button> 
-                </form>
 
             </tbody>
         </table>
