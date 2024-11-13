@@ -2,7 +2,7 @@
 
 <form method="post" action=".">{% csrf_token %}
     <a href="{% url 'buyer_inventory'  %}" class="button"> Inventory </a>
-    <a href="{% url 'buyer_inventory'  %}" class="button"> Orders </a>
+    <a href="{% url 'buyer_orders'  %}" class="button"> Orders </a>
     <a href="{% url 'buyer_inventory'  %}" class="button"> Delivery </a>
 
     <style>

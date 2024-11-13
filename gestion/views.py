@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from datetime import date
 
 from .models import User, Product, Inventory, Order, Payment, Delivery
 
@@ -116,3 +116,37 @@ def edit_inventory(request, inventory_id):
         inventory.save()
         return redirect('buyer_inventory')
     return render(request,'edit_inventory.html', {'inventory': inventory} )
+
+@login_required
+def buyer_orders(request):
+    if request.method == 'POST':
+        order_date = date.today()
+        product_id = request.POST.get('product')
+        order_date = request.POST.get('date')
+        quantity = request.POST.get('quantity')
+        product = Product.objects.get(id = product_id)
+        print(order_date, quantity)
+        Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user, supplier = request.user)
+        return redirect('buyer_orders')
+    products = Product.objects.all()
+    orders = Order.objects.all()
+        
+    return render(request, 'buyer_orders.html', {'orders': orders, 'products': products})
+
+
+    
+@login_required
+def supplier_orders(request):
+    if request.method == 'POST':
+        order_date = date.today()
+        product_id = request.POST.get('product')
+        quantity = request.POST.get('quantity')
+        product = Product.objects.get(id = product_id)
+        print(order_date, quantity)
+        Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user, supplier = request.user)
+        return redirect('supplier_orders')
+    products = Product.objects.all()
+    orders = Order.objects.all()
+    return render(request, 'supplier_orders.html', {'orders': orders, 'products': products})
+
+

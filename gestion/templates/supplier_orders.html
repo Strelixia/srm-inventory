@@ -2,18 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> Liste des utilisateurs</title>
+    <title> Orders </title>
 </head>
 <body>
-    <h1> Liste des utilisateurs</h1>
-    <a href="{% url 'user_create'%}"> Create a new user</a>
-    <ul>
-        {% for user in users %}
-            <li> <a href="{% url 'user_detail' user.id %}">{{ user.username}}</a>
-                 <a href="{% url 'user_update' user.id %}"> Modifier</a>
-                 <a href="{% url 'user_delete' user.id %}"> Delete</a>
-            </li>
-        {% enfor %}
-        </ul> 
-</body>      
+
+
+    <form method="post" action="">{% csrf_token %}
+    
+        <p><strong> commande en cours </strong></p> 
+            <div>
+                <button type="submit"> Delivery </button>
+            </div>
+    </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Order_date</th>
+                    <th>Buyer</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{order.product.name}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.order_date}}</td>
+                    <td>{{order.buyer.username}}</td>
+                    <td>{{order.product.supplier.username}}</td>
+                    
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No order available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</body>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button type="submit"> Déconnexion </button> 
+    </form>      
 </html>
+    
+
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4f4f58;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px;
+        }   
+        table {
+            display: table;
+            background-color: rgb(28, 129, 156);
+            border: 10;
+        }
+    </style>

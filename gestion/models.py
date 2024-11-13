@@ -32,10 +32,9 @@ class Inventory(models.Model):
 
 class Order(models.Model):
     buyer = models.ForeignKey(User, on_delete= models.CASCADE, related_name='buyer_orders')
-    supplier = models.ForeignKey(User, on_delete= models.CASCADE, related_name='supplier_orders')
     product = models.ForeignKey(Product, on_delete= models.CASCADE)
     quantity = models.IntegerField()
-    status = models.CharField(max_length= 20, choices= [('PENDING','pending'),('PAID','paid'),('DELIVERED','delivered')])
+    status = models.CharField(max_length= 20, choices= [('PENDING','pending'),('PAID','paid'),('DELIVERED','delivered')], default ='PENDING')
     order_date = models.DateField(auto_now_add= True)
     def __str__(self):
          return self.status, self.product
@@ -53,4 +52,5 @@ class Delivery(models.Model):
     delivery_date = models.DateTimeField()
     def __str__(self):
          return self.status, self.order
+    
     
