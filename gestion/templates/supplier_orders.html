@@ -10,9 +10,7 @@
     <form method="post" action="">{% csrf_token %}
     
         <p><strong> commande en cours </strong></p> 
-            <div>
-                <button type="submit"> Delivery </button>
-            </div>
+    
     </form>
         <table>
             <thead>
@@ -34,7 +32,9 @@
                     <td>{{order.order_date}}</td>
                     <td>{{order.buyer.username}}</td>
                     <td>{{order.product.supplier.username}}</td>
-                    
+                    <td>
+                        <button type="submit"> Delivery </button>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

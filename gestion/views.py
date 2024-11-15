@@ -1,14 +1,12 @@
 
 from django.views.generic import ListView 
-from django.http import HttpResponse
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import date
-
+from functools import wraps
 from .models import User, Product, Inventory, Order, Payment, Delivery
-
-
 
 
 
@@ -33,14 +31,29 @@ def login_view(request):
             return render(request,'login.html',{'error': 'invalid username or password'})
     return render(request, 'login.html')
 
+def role_required(role):
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request):
+                if request.user.is_authenticated and request.user.role == role:
+                    return view_func(request)
+                else:
+                    return HttpResponseForbidden(" NO PERMISSION")
+        return _wrapped_view
+    return decorator 
+
 @login_required
+@role_required('Supplier')
 def supplier_dashboard(request):
     return render(request, 'supplier_dashboard.html')
 
 @login_required
+@role_required('Buyer')
 def buyer_dashboard(request):
     return render(request, 'buyer_dashboard.html')
+
 @login_required
+@role_required('Supplier')
 def supplier_products(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -50,17 +63,18 @@ def supplier_products(request):
         Product.objects.create(name = name,description = description,price = price, supplier = request.user)
         return redirect('supplier_products')
     products = Product.objects.all()
-        
     return render(request, 'supplier_products.html', {'products': products})         
 
 @login_required
+@role_required('Supplier')
 def delete_product(request, product_id):
     product = get_object_or_404(Product, id =product_id)
     if request.method =='POST':
         product.delete()
         return redirect('supplier_products')
-    
-@login_required
+
+@login_required  
+@role_required('Supplier')
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method =='POST':
@@ -79,14 +93,13 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-
 @login_required
+@role_required('Buyer')
 def buyer_inventory(request):
     if request.method =='POST':
         product_id = request.POST.get('product')
         quantity = int(request.POST.get('quantity'))
         product =Product.objects.get(id = product_id)
-        print(product, quantity) 
         if product_id and quantity:
             existing_inventory = Inventory.objects.filter(product_id = product_id, user = request.user).first()
             if existing_inventory:
@@ -99,8 +112,8 @@ def buyer_inventory(request):
     inventory = Inventory.objects.all()
     return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory})
 
-
 @login_required
+@role_required('Buyer')
 def delete_inventory(request, inventory_id):
     inventory = get_object_or_404(Inventory, id = inventory_id)
     if request.method =='POST':
@@ -108,6 +121,7 @@ def delete_inventory(request, inventory_id):
         return redirect('buyer_inventory')
 
 @login_required
+@role_required('Buyer')
 def edit_inventory(request, inventory_id):
     inventory = get_object_or_404(Inventory, id = inventory_id)
     if request.method == 'POST':
@@ -118,6 +132,7 @@ def edit_inventory(request, inventory_id):
     return render(request,'edit_inventory.html', {'inventory': inventory} )
 
 @login_required
+@role_required('Buyer')
 def buyer_orders(request):
     if request.method == 'POST':
         order_date = date.today()
@@ -130,12 +145,10 @@ def buyer_orders(request):
         return redirect('buyer_orders')
     products = Product.objects.all()
     orders = Order.objects.all()
-        
     return render(request, 'buyer_orders.html', {'orders': orders, 'products': products})
 
-
-    
-@login_required
+@login_required  
+@role_required('Supplier')
 def supplier_orders(request):
     if request.method == 'POST':
         order_date = date.today()
@@ -149,4 +162,15 @@ def supplier_orders(request):
     orders = Order.objects.all()
     return render(request, 'supplier_orders.html', {'orders': orders, 'products': products})
 
+@login_required  
+@role_required('Buyer')
+def buyer_payment(request):
+    if request.method == 'POST':
+        return redirect('buyer_orders')
 
+
+@login_required  
+@role_required('Supplier')
+def supplier_delivery(request):
+    if request.method == 'POST':
+        return redirect('supplier_orders')
