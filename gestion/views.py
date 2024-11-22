@@ -34,9 +34,9 @@ def login_view(request):
 def role_required(role):
     def decorator(view_func):
         @wraps(view_func)
-        def _wrapped_view(request):
+        def _wrapped_view(request, *args, **kwargs):
                 if request.user.is_authenticated and request.user.role == role:
-                    return view_func(request)
+                    return view_func(request, *args, **kwargs)
                 else:
                     return HttpResponseForbidden(" NO PERMISSION")
         return _wrapped_view
@@ -164,10 +164,29 @@ def supplier_orders(request):
 
 @login_required  
 @role_required('Buyer')
-def buyer_payment(request):
+def buyer_payment(request, order_id):
+    print(f"Args: {order_id}, kwargs:{request.GET}")
+    order = get_object_or_404(Order, id = order_id)
+    amount = order.quantity*order.product.price
+    payment_date = date.today()
     if request.method == 'POST':
+        order.status = ('PAID')
+        Payment.objects.create( order= order, amount = amount, payment_date = payment_date)           
         return redirect('buyer_orders')
+    order.save()
+    return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
 
+@login_required  
+@role_required('Buyer')
+def table_after_payment(request, payment_id):
+    payment= get_object_or_404(Payment, id =payment_id)
+    if request.method == 'POST':
+        payment.status = ('PAID')
+        Payment.objects.create( payment = payment)
+        return redirect('buyer_payment')
+    payment.save()
+    payments=Payment.objects.all()
+    return render(request, 'buyer_payment.html',{'payments': payments})
 
 @login_required  
 @role_required('Supplier')

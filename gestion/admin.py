@@ -8,3 +8,4 @@ class UserInline(admin.TabularInline):
     extra = 3
 
 admin.site.register(User)
+

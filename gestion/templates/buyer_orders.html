@@ -45,7 +45,9 @@
                     <td>{{order.buyer.username}}</td>
                     <td>{{order.product.supplier.username}}</td>
                     <td>
-                        <button type="submit"> Payment </button>
+                        <form method="get" action="{% url 'buyer_payment' order.id %}">{% csrf_token %} 
+                            <button type="submit"> Payment </button> 
+                        </form>
                     </td>
                 </tr>
                 {% empty %}
@@ -55,10 +57,62 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <p><strong> commande déjà payé </strong></p>
+        <form method="get" action="">{% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment_date</th>
+                    <th>Buyer</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{order.product.name}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.product.price}}</td>
+                    <td>{{amount}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{payment_date}}</td>
+                    <td>{{order.buyer.username}}</td>
+                    <td>{{order.product.supplier.username}}</td>
+                
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No order paid.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </form>
 </body>
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit"> Déconnexion </button> 
     </form>      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </html>
     
 
