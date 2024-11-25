@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for order in orders %}
+                {% for order in pending_orders %}
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
@@ -74,14 +74,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for payment in payments %}
+                {% for order in paid_orders %}
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
                     <td>{{order.product.price}}</td>
-                    <td>{{amount}}</td>
+                    <td>{{order.payment.amount}}</td>
                     <td>{{order.status}}</td>
-                    <td>{{payment_date}}</td>
+                    <td>{{order.payment.payment_date}}</td>
                     <td>{{order.buyer.username}}</td>
                     <td>{{order.product.supplier.username}}</td>
                 
