@@ -8,7 +8,8 @@ from datetime import date
 from functools import wraps
 from .models import User, Product, Inventory, Order, Payment, Delivery
 
-
+def home(request):
+    return render(request, 'home.html')
 
 def login_view(request):
     if request.method == 'GET':
@@ -137,17 +138,18 @@ def buyer_orders(request):
     if request.method == 'POST':
         order_date = date.today()
         product_id = request.POST.get('product')
-        order_date = request.POST.get('date')
         quantity = request.POST.get('quantity')
         product = Product.objects.get(id = product_id)
-        print(order_date, quantity)
-        Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user, supplier = request.user)
+        Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user)
         return redirect('buyer_orders')
+    
+    pending_orders = Order.objects.filter(status = 'PENDING')
+    paid_orders = Order.objects.filter(status = 'PAID')
     products = Product.objects.all()
-    orders = Order.objects.all()
-    return render(request, 'buyer_orders.html', {'orders': orders, 'products': products})
 
-@login_required  
+    return render(request, 'buyer_orders.html', {'products': products,'pending_orders': pending_orders, 'paid_orders': paid_orders,})
+
+@login_required
 @role_required('Supplier')
 def supplier_orders(request):
     if request.method == 'POST':
@@ -165,28 +167,15 @@ def supplier_orders(request):
 @login_required  
 @role_required('Buyer')
 def buyer_payment(request, order_id):
-    print(f"Args: {order_id}, kwargs:{request.GET}")
     order = get_object_or_404(Order, id = order_id)
-    amount = order.quantity*order.product.price
-    payment_date = date.today()
+    amount = order.quantity * order.product.price
     if request.method == 'POST':
+        payment_date = date.today()
+        Payment.objects.create( order= order, amount = amount, payment_date = payment_date)
         order.status = ('PAID')
-        Payment.objects.create( order= order, amount = amount, payment_date = payment_date)           
+        order.save()          
         return redirect('buyer_orders')
-    order.save()
     return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
-
-@login_required  
-@role_required('Buyer')
-def table_after_payment(request, payment_id):
-    payment= get_object_or_404(Payment, id =payment_id)
-    if request.method == 'POST':
-        payment.status = ('PAID')
-        Payment.objects.create( payment = payment)
-        return redirect('buyer_payment')
-    payment.save()
-    payments=Payment.objects.all()
-    return render(request, 'buyer_payment.html',{'payments': payments})
 
 @login_required  
 @role_required('Supplier')

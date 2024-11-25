@@ -1,7 +1,5 @@
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
 
 class User(AbstractUser):
     ROLE_CHOICES = [
@@ -34,14 +32,14 @@ class Order(models.Model):
     buyer = models.ForeignKey(User, on_delete= models.CASCADE, related_name='buyer_orders')
     product = models.ForeignKey(Product, on_delete= models.CASCADE)
     quantity = models.IntegerField()
-    status = models.CharField(max_length= 20, choices= [('PENDING','pending'),('PAID','paid'),('DELIVERED','delivered')], default ='PENDING')
+    status = models.CharField(max_length= 20, choices= [('PENDING','pending'),('PAID','paid'),('DELIVERED','delivered'),('CANCELLED','cancelled')], default ='PENDING')
     order_date = models.DateField(auto_now_add= True)
     def __str__(self):
-         return self.status, self.product
+         return f'Status: {self.status} | {self.product.name} - {self.quantity}'
+
 class Payment(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='payment')
     amount = models.DecimalField(max_digits= 10, decimal_places= 2)
-    status = models.CharField(max_length= 20, choices= [('PENDING','pending'),('PAID','paid'),('DELIVERED','delivered')])
     payment_date = models.DateTimeField(auto_now_add= True)
     def __str__(self):
          return self.status, self.amount
