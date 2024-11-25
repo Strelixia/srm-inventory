@@ -1,0 +1,25 @@
+
+ 
+<form method="post" action="">{% csrf_token %}
+    <table>
+        <thead>
+            
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Price</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+              
+            <tr>
+                <td><input name="name" value="{{product.name}}"> </td>
+                <td><input name="description" value="{{product.description}}"></td>
+                <td><input name="price" value="{{product.price}}"></td>
+            </tr>
+            
+        </tbody>
+    </table>
+    <button>save product</button>
+</form>
