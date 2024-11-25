@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "gestion.apps.GestionConfig",
+    
 ]
-
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend"
+    
+    ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -98,8 +102,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
+AUTH_USER_MODEL = 'gestion.User'
+LOGIN_URL = '/login/'
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 

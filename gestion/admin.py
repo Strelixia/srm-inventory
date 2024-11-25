@@ -1,3 +1,11 @@
+
 from django.contrib import admin
 
-# Register your models here.
+from .models import User, Product
+
+class UserInline(admin.TabularInline):
+    model = User
+    extra = 3
+
+admin.site.register(User)
+
