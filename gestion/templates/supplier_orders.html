@@ -17,6 +17,8 @@
                 <tr>
                     <th>Product</th>
                     <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
                     <th>Status</th>
                     <th>Order_date</th>
                     <th>Buyer</th>
@@ -24,16 +26,21 @@
                 </tr>
             </thead>
             <tbody>
-                {% for order in orders %}
+                {% for order in paid_orders %}
+                {% load custom_filters %}
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
+                    <td>{{order.product.price}}USD</td>
+                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
                     <td>{{order.status}}</td>
                     <td>{{order.order_date}}</td>
                     <td>{{order.buyer.username}}</td>
                     <td>{{order.product.supplier.username}}</td>
                     <td>
-                        <button type="submit"> Delivery </button>
+                        <form method="get" action="{% url 'supplier_delivery' order.id %}">{% csrf_token %} 
+                            <button type="submit"> Delivery </button>
+                        </form>
                     </td>
                 </tr>
                 {% empty %}
@@ -43,6 +50,44 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <p><strong> commande déjà livré</strong></p>
+        <form method="get" action="">{% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Delivery_date</th>
+                    <th>Buyer</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in delivery_orders %}
+                {% load custom_filters %}
+                <tr>
+                    <td>{{order.product.name}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.product.price}}USD</td>
+                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.delivery_date}}</td>
+                    <td>{{order.buyer.username}}</td>
+                    <td>{{order.product.supplier.username}}</td>
+                    
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No order available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </form>
 </body>
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit"> Déconnexion </button> 

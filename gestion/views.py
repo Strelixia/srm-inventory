@@ -4,7 +4,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from datetime import date
+import datetime
 from functools import wraps
 from .models import User, Product, Inventory, Order, Payment, Delivery
 
@@ -100,7 +100,7 @@ def buyer_inventory(request):
     if request.method =='POST':
         product_id = request.POST.get('product')
         quantity = int(request.POST.get('quantity'))
-        product =Product.objects.get(id = product_id)
+        product = Product.objects.get(id = product_id)
         if product_id and quantity:
             existing_inventory = Inventory.objects.filter(product_id = product_id, user = request.user).first()
             if existing_inventory:
@@ -109,6 +109,7 @@ def buyer_inventory(request):
             else:
                 inventory = Inventory.objects.create(product = product, quantity = quantity, user = request.user)
         return redirect('buyer_inventory')
+    
     products = Product.objects.all()
     inventory = Inventory.objects.all()
     return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory})
@@ -136,7 +137,7 @@ def edit_inventory(request, inventory_id):
 @role_required('Buyer')
 def buyer_orders(request):
     if request.method == 'POST':
-        order_date = date.today()
+        order_date = datetime.date.today()
         product_id = request.POST.get('product')
         quantity = request.POST.get('quantity')
         product = Product.objects.get(id = product_id)
@@ -153,16 +154,18 @@ def buyer_orders(request):
 @role_required('Supplier')
 def supplier_orders(request):
     if request.method == 'POST':
-        order_date = date.today()
+        order_date = datetime.date.today()
         product_id = request.POST.get('product')
         quantity = request.POST.get('quantity')
         product = Product.objects.get(id = product_id)
         print(order_date, quantity)
         Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user, supplier = request.user)
         return redirect('supplier_orders')
+    paid_orders =  Order.objects.filter(status ='PAID')
+    delivery_orders = Order.objects.filter(status ='DELIVERED')
     products = Product.objects.all()
     orders = Order.objects.all()
-    return render(request, 'supplier_orders.html', {'orders': orders, 'products': products})
+    return render(request, 'supplier_orders.html', {'orders': orders, 'products': products,'delivery_orders': delivery_orders, 'paid_orders': paid_orders})
 
 @login_required  
 @role_required('Buyer')
@@ -170,15 +173,30 @@ def buyer_payment(request, order_id):
     order = get_object_or_404(Order, id = order_id)
     amount = order.quantity * order.product.price
     if request.method == 'POST':
-        payment_date = date.today()
-        Payment.objects.create( order= order, amount = amount, payment_date = payment_date)
+        payment_date = datetime.datetime.now()
+        Payment.objects.create( order = order, amount = amount)
         order.status = ('PAID')
+        order.payment_date = payment_date
         order.save()          
         return redirect('buyer_orders')
     return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
 
 @login_required  
 @role_required('Supplier')
-def supplier_delivery(request):
+def supplier_delivery(request, order_id):
+    order = get_object_or_404(Order, id = order_id)
+    amount = order.quantity * order.product.price
+    if request.method == 'POST':
+        delivery_date = datetime.datetime.now()
+        Delivery.objects.create( order = order)
+        order.status = ('DELIVERED')
+        order.delivery_date = delivery_date
+        order.save()
+        return redirect('supplier_orders')
+    return render(request, 'supplier_delivery.html',{'order': order, 'amount': amount})
+
+@login_required  
+@role_required('Buyer')
+def buyer_delivery(request):
     if request.method == 'POST':
         return redirect('supplier_orders')

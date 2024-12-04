@@ -1,3 +1,4 @@
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,10 +79,10 @@
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
-                    <td>{{order.product.price}}</td>
-                    <td>{{order.payment.amount}}</td>
+                    <td>{{order.product.price}} USD</td>
+                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
                     <td>{{order.status}}</td>
-                    <td>{{order.payment.payment_date}}</td>
+                    <td>{{order.payment_date}}</td>
                     <td>{{order.buyer.username}}</td>
                     <td>{{order.product.supplier.username}}</td>
                 
