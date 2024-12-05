@@ -34,6 +34,7 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete= models.CASCADE)
     quantity = models.IntegerField()
     status = models.CharField(max_length= 20, choices= [('PENDING','pending'),('PAID','paid'),('DELIVERED','delivered'),('CANCELLED','cancelled')], default ='PENDING')
+    is_processed = models.BooleanField(default = False)
     order_date = models.DateField(auto_now_add=True)
     payment_date = models.DateTimeField(auto_now_add=True)
     delivery_date = models.DateTimeField(auto_now_add=True)

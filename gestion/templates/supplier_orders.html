@@ -8,7 +8,7 @@
 
 
     <form method="post" action="">{% csrf_token %}
-    
+        {% load custom_filters %}
         <p><strong> commande en cours </strong></p> 
     
     </form>
@@ -27,7 +27,6 @@
             </thead>
             <tbody>
                 {% for order in paid_orders %}
-                {% load custom_filters %}
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
@@ -68,7 +67,6 @@
             </thead>
             <tbody>
                 {% for order in delivery_orders %}
-                {% load custom_filters %}
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>

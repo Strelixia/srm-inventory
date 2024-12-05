@@ -1,0 +1,64 @@
+<p><strong> ORDERS DELIVERED</strong></p>
+        <form method="get" action="">{% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Delivery_date</th>
+                    <th>Buyer</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in delivery_orders %}
+                {% load custom_filters %}
+                <tr>
+                    <td>{{order.product.name}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.product.price}}USD</td>
+                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.delivery_date}}</td>
+                    <td>{{order.buyer.username}}</td>
+                    <td>{{order.product.supplier.username}}</td>
+                    <td>
+                        <form method="post" action="{% url 'update_inventory' order.id %}">{% csrf_token %}
+                        <button type="submit"> Update </button> 
+                        </form>
+                    </td>
+                
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No order available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </form>
+
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button type="submit"> Déconnexion </button> 
+    </form> 
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4f4f58;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px;
+        }   
+        table {
+            display: table;
+            background-color: rgb(28, 129, 156);
+            border: 10;
+        }
+    </style>     
