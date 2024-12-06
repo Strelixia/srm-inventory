@@ -60,8 +60,9 @@ def supplier_products(request):
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
-        print(name,description,price)
-        Product.objects.create(name = name,description = description,price = price, supplier = request.user)
+        quantity = request.POST.get('quantity')
+        print(name,description,price, quantity)
+        Product.objects.create(name = name,description = description,price = price, quantity = quantity, supplier = request.user)
         return redirect('supplier_products')
     products = Product.objects.all()
     return render(request, 'supplier_products.html', {'products': products})         
@@ -102,6 +103,7 @@ def buyer_inventory(request):
         quantity = int(request.POST.get('quantity'))
         product = Product.objects.get(id = product_id)
         if product_id and quantity:
+            
             existing_inventory = Inventory.objects.filter(product_id = product_id, user = request.user).first()
             if existing_inventory:
                 existing_inventory.quantity += quantity
@@ -112,7 +114,7 @@ def buyer_inventory(request):
     
     products = Product.objects.all()
     inventory = Inventory.objects.all()
-    return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory})
+    return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory, 'error_message': f" La quantité demandé est indisponible"})
 
 @login_required
 @role_required('Buyer')
@@ -141,6 +143,7 @@ def buyer_orders(request):
         product_id = request.POST.get('product')
         quantity = request.POST.get('quantity')
         product = Product.objects.get(id = product_id)
+        
         Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user)
         return redirect('buyer_orders')
     
@@ -176,7 +179,7 @@ def buyer_payment(request, order_id):
         Payment.objects.create( order = order, amount = amount)
         order.status = ('PAID')
         order.payment_date = payment_date
-        order.save()          
+        order.save()
         return redirect('buyer_orders')
     return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
 
@@ -185,12 +188,15 @@ def buyer_payment(request, order_id):
 def supplier_delivery(request, order_id):
     order = get_object_or_404(Order, id = order_id)
     amount = order.quantity * order.product.price
+    
     if request.method == 'POST':
         delivery_date = datetime.datetime.now()
         Delivery.objects.create( order = order)
         order.status = ('DELIVERED')
         order.delivery_date = delivery_date
         order.save()
+        order.product.quantity -= order.quantity
+        order.product.save()
         return redirect('supplier_orders')
     return render(request, 'supplier_delivery.html',{'order': order, 'amount': amount})
 

@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title> Liste des produits</title>
 </head>
+    {% if error_message %}
+    <div class="alert alert-danger">{{ error_message}}
+    </div>
+    {% endif %}
 <body>
-
-
     <form method="post" action="">{% csrf_token %}
     
         <p><strong> Add a new product </strong></p> 
@@ -19,8 +21,11 @@
             <label for ="price"> Price</label>
             <input type="number" step="0.01"  id="price" name="price" required><br><br>
 
+            <label for ="price"> Quantity</label>
+            <input type="number"  id="quantity" name="quantity" required><br><br>
+
             <div>
-             <button type="submit"> Add product </button>
+             <button type="submit"> Add product</button>
             </div>
         
     </form>
@@ -30,6 +35,7 @@
                     <th>Nom</th>
                     <th>Description</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                     <th>Supplier</th>
                 </tr>
             </thead>
@@ -39,6 +45,7 @@
                     <td>{{product.name}}</td>
                     <td>{{product.description}}</td>
                     <td>{{product.price}}</td>
+                    <td>{{product.quantity}}</td>
                     <td>{{product.supplier.username}}</td>
                     <td> <form method="post" action="{% url 'delete_product' product.id %}">{% csrf_token %}
                             <button type="submit"> Delete </button> 
