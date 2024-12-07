@@ -6,8 +6,13 @@
     <title> Orders </title>
 </head>
 <body>
-
-
+    {% if messages %}        
+    <ul>
+        {% for message in messages %}
+        <li class="{{messages.tags}}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <form method="post" action="">{% csrf_token %}
     
         <p><strong> commande en cours </strong></p> 
@@ -48,6 +53,11 @@
                     <td>
                         <form method="get" action="{% url 'buyer_payment' order.id %}">{% csrf_token %} 
                             <button type="submit"> Payment </button> 
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'delete_order' order.id %}">{% csrf_token %} 
+                            <button type="submit"> Delete order</button> 
                         </form>
                     </td>
                 </tr>

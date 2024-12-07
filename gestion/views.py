@@ -1,4 +1,4 @@
-
+from django.contrib import messages
 from django.views.generic import ListView 
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
@@ -114,7 +114,7 @@ def buyer_inventory(request):
     
     products = Product.objects.all()
     inventory = Inventory.objects.all()
-    return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory, 'error_message': f" La quantité demandé est indisponible"})
+    return render(request, 'buyer_inventory.html',{'products': products,'inventory': inventory})
 
 @login_required
 @role_required('Buyer')
@@ -141,17 +141,20 @@ def buyer_orders(request):
     if request.method == 'POST':
         order_date = datetime.date.today()
         product_id = request.POST.get('product')
-        quantity = request.POST.get('quantity')
+        quantity = int(request.POST.get('quantity'))
         product = Product.objects.get(id = product_id)
         
+        if product.quantity < quantity:
+            messages.error(request,f" Quantity's not available, we have {product.quantity}")
+            return redirect('buyer_orders')
         Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user)
         return redirect('buyer_orders')
     
     pending_orders = Order.objects.filter(status = 'PENDING')
     paid_orders = Order.objects.filter(status = 'PAID')
     products = Product.objects.all()
-
     return render(request, 'buyer_orders.html', {'products': products,'pending_orders': pending_orders, 'paid_orders': paid_orders,})
+    
 
 @login_required
 @role_required('Supplier')
@@ -182,6 +185,15 @@ def buyer_payment(request, order_id):
         order.save()
         return redirect('buyer_orders')
     return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
+
+@login_required
+@role_required('Buyer')
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id = order_id)
+    if request.method =='POST':
+        order.delete()
+        return redirect('buyer_orders')
+    
 
 @login_required  
 @role_required('Supplier')
