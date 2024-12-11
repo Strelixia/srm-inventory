@@ -1,11 +1,10 @@
 
 from django.contrib import admin
 
-from .models import User, Product
+from .models import Delivery, Product , Order, User, Payment
 
-class UserInline(admin.TabularInline):
-    model = User
-    extra = 3
-
+admin.site.register(Delivery)
+admin.site.register(Product)
+admin.site.register(Order)
 admin.site.register(User)
-
+admin.site.register(Payment)

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from functools import wraps
 from .models import User, Product, Inventory, Order, Payment, Delivery
-
+from .utils import send_invoice_email
 def home(request):
     return render(request, 'home.html')
 
@@ -183,6 +183,7 @@ def buyer_payment(request, order_id):
         order.status = ('PAID')
         order.payment_date = payment_date
         order.save()
+        send_invoice_email(order, buyer_email ='murairicedric@gmail.com')
         return redirect('buyer_orders')
     return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
 
@@ -245,3 +246,4 @@ def update_inventory(request, order_id):
         order.save()
         return redirect('buyer_inventory')
     return render(request, 'buyer_delivery.html')
+
