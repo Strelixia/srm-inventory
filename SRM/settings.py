@@ -121,6 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = 'static/'
+STATITFILES_DIRS =[ BASE_DIR /'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
@@ -135,3 +136,5 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default = '')
 DEFAULT_FROM_EMAIL =config('DEFAULT_FROM_EMAIL', default = 'webmaster@localhost')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")

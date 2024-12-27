@@ -1,13 +1,19 @@
 from django.contrib import messages
 from django.views.generic import ListView 
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import stripe
+import json
+from django.conf import settings
 import datetime
 from functools import wraps
 from .models import User, Product, Inventory, Order, Payment, Delivery
 from .utils import send_invoice_email, send_delivery_email
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 def home(request):
     return render(request, 'home.html')
 
@@ -178,14 +184,23 @@ def buyer_payment(request, order_id):
     order = get_object_or_404(Order, id = order_id)
     amount = order.quantity * order.product.price
     if request.method == 'POST':
-        payment_date = datetime.datetime.now()
-        Payment.objects.create( order = order, amount = amount)
-        order.status = ('PAID')
-        order.payment_date = payment_date
-        order.save()
-        send_invoice_email(order, buyer_email ='murairicedric@gmail.com',supplier_email = 'maguy.birikomo@gmail.com')
-        return redirect('buyer_orders')
-    return render(request, 'buyer_payment.html',{'order': order,'amount': amount})
+        data = json.loads(request.body)
+        print(data)
+        # payment_method_id = data.get(payment_method_id)
+        try:
+            payment_intent = stripe.PaymentIntent.create(amount = amount, currency='usd',payment_method = payment_method_id, confirm = True)
+            payment_date = datetime.datetime.now()
+            Payment.objects.create( order = order, amount = amount)
+            if payment_intent.status == 'requires_action' or payment_intent.status == 'succeeded':
+                order.status = ('PAID')
+                order.payment_date = payment_date
+                order.save()
+                send_invoice_email(order)
+
+            return JsonResponse({'success': True})
+        except stripe.error.CardError as e:
+            return JsonResponse({'error': str(e)}, status = 400)
+    return render(request, 'buyer_payment.html',{'order': order,'amount': amount, "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY})
 
 @login_required
 @role_required('Buyer')

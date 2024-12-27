@@ -29,3 +29,5 @@ def send_delivery_email (order, buyer_email, supplier_email):
     )
     email.content_subtype = "html"
     email.send()
+
+

@@ -1,4 +1,10 @@
-<form method ="post" action="">
+{% load static %}
+<html>
+    <head>
+        <title>Bon de livraison</title>
+        <script src ="https://js.stripe.com/v3/"></script>
+    </head>
+    <body>
     <p><strong> Payment running... </strong></p>
     <div>
         <p>Product name : {{order.product.name}}</p>
@@ -8,7 +14,62 @@
         <p>Status : {{order.status}}</p>
         <p>Date : {{order.order_date}}</p>
     </div>
-    <form method="get" action="{% url 'buyer_orders' %}">{% csrf_token %} 
-        <button type="submit"> Validation </button> 
+    <form id ="payment_form">{% csrf_token %}
+        <div id="card-element"></div>
+        <div id="card-errors" role ="alert"></div> 
+        <button > Validation </button> 
     </form>
-</form>
+    <script>
+        const stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+        const elements = stripe.elements();
+        const card = elements.create("card", {
+            style: {
+                base: {
+                    color:"#32325d",
+                    fontFamily:'"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing:"antialiased",
+                    fontSize:"16px", "::placeholder":{color:"#aab7c4"}
+
+                    },
+                invalid:{ 
+                    color: "#fa755a",
+                    iconColor: "#fa755a",
+                     }
+                    }
+            });
+        card.mount("#card-element");
+
+        card.on("change", function(events){
+            const displayError = document.getElementById("card-errors");
+            if (event.error){
+                displayError.textContent = event.error.message;
+            } else {displayError.textContent ="";}
+        });
+        const form = document.getElementById("payment_form");
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const { paymentMethod, error} = await stripe.createPaymentMethod({
+                type: "card",
+                card: card,
+            });
+            if (error){
+                document.getElementById("card-errors").textContent = error.message;
+            } else {const response = await fetch("{% url 'buyer_payment' order.id %}", { 
+                method:"POST",
+                headers: {
+                    "content-type":"application/json",
+                    "X-CSRFToken":"{{csrf_token}}"
+                },
+                body: JSON.stringify({ payment_method_id: paymentMethod.id}),
+            });
+            const result = await response.json();
+            if(result.success){
+                alert("Paiement reussi !");
+                window.location.href = "{% url 'buyer_orders' %}";
+            } else { alert("Erreur:" + resultat.error);
+            }
+        }
+        });
+    </script>
+    </body>
+</html>    
