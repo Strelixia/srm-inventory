@@ -1,19 +1,22 @@
-<h1> Welcome at supplier's Dashboard</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<form method="get" action="{% url 'supplier_products' %}">{% csrf_token %}
+    <button type="submit" class="btn"> Product </button> 
+</form>
+<form method="get" action="{% url 'supplier_orders' %}">{% csrf_token %}
+    <button type="submit" class="btn"> Orders and Delivery </button> 
+</form>
+<form method="post" action="{% url 'logout' %}">{% csrf_token %}
+    <button type="submit" class="dec"> Déconnexion </button> 
+</form>
+</html>
 
-    <a href="{% url 'supplier_products'  %}" class="button"> Products </a>
-    <a href="{% url 'supplier_orders'  %}" class="button"> Orders and Delivery</a>
 
-    <style>
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #0e0e0e;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin: 5px;
-        }   
-        </style>
+
+   
 

@@ -26,7 +26,7 @@
             <input type="number"  id="quantity" name="quantity" required><br><br>
 
             <div>
-             <button type="submit"> Add product</button>
+             <button type="submit" class="btn"> Add product</button>
             </div>
         
     </form>
@@ -49,7 +49,7 @@
                     <td>{{product.quantity}}</td>
                     <td>{{product.supplier.username}}</td>
                     <td> <form method="post" action="{% url 'delete_product' product.id %}">{% csrf_token %}
-                            <button type="submit"> Delete </button> 
+                            <button type="submit" class="decbtn"> Delete </button> 
                         </form>
                     </td>
                     <td>
@@ -68,26 +68,7 @@
         </table>
 </body>
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button type="submit"> Déconnexion </button> 
+        <button type="submit" class="dec"> Déconnexion </button> 
     </form>      
 </html>
     
-
-    <style>
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4f4f58;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin: 5px;
-        }   
-        table {
-            display: table;
-            background-color: rgb(28, 129, 156);
-            border: 10;
-        }
-    </style>

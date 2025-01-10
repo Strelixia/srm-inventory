@@ -1,10 +1,10 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <html>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <body>
-        <h3>Welcome to inventory manager</h3>
-        <div class="main-section">
-            <a href="/login"class="button"> Login </a>
-        </div>
+        <p>Welcome to inventory manager</p>
+        <form method="post" action="{% url 'login' %}">{% csrf_token %}
+        <button type="submit" class="btn"> Login </button>
+        </form>
     </body>
 </html>

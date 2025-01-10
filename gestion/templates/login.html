@@ -1,4 +1,6 @@
-<h1> Se connecter</h1>
+    {% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <h1> Se connecter</h1>
 {% if error %}
 <p><strong> User doesn't exist or false password</strong></p>
 {% endif %}
@@ -9,7 +11,7 @@
     <input type="text" name="username" required>
     <label for ="password"> Password</label>
     <input type="password" name="password" required>
-<button type="submit"> Connexion </button>
+<button type="submit" class="con"> Connexion </button>
 </form>
 {% endif %}
 

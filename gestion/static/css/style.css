@@ -1,16 +1,97 @@
-.button {
+p {
+    text-align: left ;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    
+}
+button {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #58534f;
-    color: white;
+    padding: 8px 20px;
+    background-color: rgb(10, 10, 10);
+    color: rgb(209, 252, 249);
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 16px;
-    margin: 5px;
-}   
+    font-size: 11px;
+    margin: -10px auto;
+    cursor: pointer;
+}  
+.decbtn{
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: rgb(239, 3, 3);
+    color: rgb(209, 252, 249);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 11px;
+    margin: -10px auto;
+    cursor: pointer;
+}    
 table {
-    display: table;
-    background-color:rgb(28, 129, 156);
-    border: 10;
+    display: grid;
+    margin: 0 0%;
+    width: 65%;
+    background-color:rgb(11, 11, 11);
+    border-collapse: collapse;
+    border-radius: 10px;
+    color: aliceblue;
+    
 }
+thead{
+    background-color:rgb(23, 59, 239);
+}
+table th, table td{
+    border:1px solid,
+    ;
+    padding: 10px;
+    text-align: center;
+}
+form label{
+    display: block;
+    
+}
+form select, form input{
+    display: block;
+    width: 11%;
+}
+body{
+    background-color: rgb(244, 242, 249);
+    text-align: justify;
+    padding: 0 10%;
+}
+.btn{
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: rgb(10, 10, 10);
+    color: rgb(209, 252, 249);
+    text-align: center;
+    border-radius: 5px;
+    font-size: 11px;
+    margin: 40px auto;
+    cursor: pointer;
+}
+.dec{
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: rgb(239, 3, 3);
+    color: rgb(209, 252, 249);
+    text-align: center;
+    border-radius: 5px;
+    font-size: 11px;
+    margin: 40px auto;
+    cursor: pointer;
+    bottom: 0px;
+} 
+.con{
+    display: inline-block;
+    padding: 8px 20px;
+    background-color:rgb(23, 59, 239);
+    color: rgb(209, 252, 249);
+    text-align: center;
+    border-radius: 5px;
+    font-size: 11px;
+    margin: 40px auto;
+    cursor: pointer;
+    bottom: 0px;
+} 

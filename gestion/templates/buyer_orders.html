@@ -17,7 +17,7 @@
     {% endif %}
     <form method="post" action="">{% csrf_token %}
     
-        <p><strong> commande en cours </strong></p> 
+        <p><strong> COMMANDE EN COURS... </strong></p> 
             <label for ="product"> Product</label> 
             <select name="product" id="product" required><br><br>
                 <option value="">Select a product</option>
@@ -28,8 +28,8 @@
 
             <label for ="quantity"> Quantity</label>
             <input type="number" id="quantity" name="quantity" min="1" required><br><br>
-            <div>
-                <button type="submit"> Add order </button>
+            <div >
+                <button type="submit" class="btn"> Add order </button>
             </div>
     </form>
         <table>
@@ -59,7 +59,7 @@
                     </td>
                     <td>
                         <form method="post" action="{% url 'delete_order' order.id %}">{% csrf_token %} 
-                            <button type="submit"> Delete order</button> 
+                            <button type="submit" class="decbtn"> Delete order</button> 
                         </form>
                     </td>
                 </tr>
@@ -71,7 +71,7 @@
             </tbody>
         </table>
 
-        <p><strong> commande déjà payé </strong></p>
+        <p><strong> COMMANDE PAYE </strong></p>
         <form method="get" action="">{% csrf_token %}
         <table>
             <thead>
@@ -109,8 +109,7 @@
         </form>
 </body>
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button type="submit"> Déconnexion </button> 
+        <button type="submit" class="dec"> Déconnexion </button> 
     </form>      
 
 </html>
-    
