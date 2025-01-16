@@ -91,7 +91,20 @@ body{
     text-align: center;
     border-radius: 5px;
     font-size: 11px;
-    margin: 40px auto;
+    margin: 200px auto;
     cursor: pointer;
     bottom: 0px;
 } 
+
+.pay{
+    display: inline-block;
+    padding: 8px 20px;
+    background-color:rgb(4, 4, 4);
+    color: rgb(209, 252, 249);
+    text-align: center;
+    border-radius: 5px;
+    font-size: 11px;
+    margin: 200px auto;
+    cursor: pointer;
+    bottom: 0px;
+}

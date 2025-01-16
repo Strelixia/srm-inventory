@@ -9,8 +9,8 @@ import json
 from django.conf import settings
 import datetime
 from functools import wraps
-from .models import User, Product, Inventory, Order, Payment, Delivery
-from .utils import send_invoice_email, send_delivery_email
+from .models import Product, Inventory, Order, Payment, Delivery
+from .utils import send_email
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -186,16 +186,18 @@ def buyer_payment(request, order_id):
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
-        # payment_method_id = data.get(payment_method_id)
+        payment_method_id = data.get('payment_method_id')
         try:
-            payment_intent = stripe.PaymentIntent.create(amount = amount, currency='usd',payment_method = payment_method_id, confirm = True)
+            payment_intent = stripe.PaymentIntent.create(amount = int(amount*100), currency='usd',payment_method = payment_method_id, 
+            confirm = True,payment_method_options = {'card': {'request_three_d_secure': 'automatic'}},
+            automatic_payment_methods={'enabled': True, 'allow_redirects': 'never'})
             payment_date = datetime.datetime.now()
             Payment.objects.create( order = order, amount = amount)
             if payment_intent.status == 'requires_action' or payment_intent.status == 'succeeded':
                 order.status = ('PAID')
                 order.payment_date = payment_date
                 order.save()
-                send_invoice_email(order)
+                send_email(order, subject="Payment Successful", template_name="invoice_email.html")
 
             return JsonResponse({'success': True})
         except stripe.error.CardError as e:
@@ -225,7 +227,7 @@ def supplier_delivery(request, order_id):
         order.save()
         order.product.quantity -= order.quantity
         order.product.save()
-        send_delivery_email(order, buyer_email ='murairicedric@gmail.com', supplier_email = 'maguy.birikomo@gmail.com')
+        send_email(order, subject = 'delivery of goods', template_name="delivery_email.html")
         return redirect('supplier_orders')
     return render(request, 'supplier_delivery.html',{'order': order, 'amount': amount})
 
