@@ -45,7 +45,7 @@ def role_required(role):
                 if request.user.is_authenticated and request.user.role == role:
                     return view_func(request, *args, **kwargs)
                 else:
-                    return HttpResponseForbidden(" NO PERMISSION")
+                    return HttpResponseForbidden("NO PERMISSION")
         return _wrapped_view
     return decorator 
 
@@ -242,10 +242,10 @@ def buyer_delivery(request):
         print(order_date, quantity)
         Order.objects.create(product = product,quantity = quantity,  order_date = order_date, buyer = request.user, supplier = request.user)
         return redirect('buyer_delivery')
-    paid_orders =  Order.objects.filter(status ='PAID')
+    
     delivery_orders = Order.objects.filter(status ='DELIVERED', is_processed = False)
     products = Product.objects.all()
-    return render (request, 'buyer_delivery.html', {'products': products,'delivery_orders': delivery_orders, 'paid_orders': paid_orders})
+    return render (request, 'buyer_delivery.html', {'products': products,'delivery_orders': delivery_orders})
 
 @login_required  
 @role_required('Buyer')
@@ -260,8 +260,11 @@ def update_inventory(request, order_id):
             existing_inventory.save()
         else:
             Inventory.objects.create(product = product, quantity = quantity, user = request.user)
+
         order.is_processed = True
         order.save()
+
+        print(order.status, order.is_processed)
+
         return redirect('buyer_inventory')
-    return render(request, 'buyer_delivery.html')
 

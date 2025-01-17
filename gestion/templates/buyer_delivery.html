@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <p><strong> ORDERS DELIVERED</strong></p>
         <form method="get" action="">{% csrf_token %}
@@ -17,7 +18,6 @@
             </thead>
             <tbody>
                 {% for order in delivery_orders %}
-                {% load custom_filters %}
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
@@ -45,5 +45,5 @@
 
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit" class="dec"> Déconnexion </button> 
-    </form> 
+    </form>
 
