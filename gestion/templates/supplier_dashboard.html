@@ -5,15 +5,23 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<form method="get" action="{% url 'supplier_products' %}">{% csrf_token %}
-    <button type="submit" class="btn"> Product </button> 
-</form>
-<form method="get" action="{% url 'supplier_orders' %}">{% csrf_token %}
-    <button type="submit" class="btn"> Orders and Delivery </button> 
-</form>
-<form method="post" action="{% url 'logout' %}">{% csrf_token %}
-    <button type="submit" class="dec"> Déconnexion </button> 
-</form>
+
+<body>
+    <h1> Welcome at buyer's Dashboard</h1>
+
+    <div class="dash-main-section">
+        <form method="get" action="{% url 'supplier_products' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Product </button> 
+        </form>
+        <form method="get" action="{% url 'supplier_orders' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Orders and Delivery </button> 
+        </form>
+    </div>
+
+    <form class="action-btn" method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button type="submit" class="btn btn-danger"> Déconnexion </button> 
+    </form>
+</body>
 </html>
 
 

@@ -2,9 +2,9 @@
 <html>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <body>
-        <p>Welcome to inventory manager</p>
+        <h1>Welcome to inventory manager</h1>
         <form method="post" action="{% url 'login' %}">{% csrf_token %}
-        <button type="submit" class="btn"> Login </button>
+        <button type="submit" class="btn btn-primary"> Login </button>
         </form>
     </body>
 </html>

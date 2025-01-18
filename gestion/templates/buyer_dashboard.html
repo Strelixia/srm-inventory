@@ -1,15 +1,29 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<h1> Welcome at buyer's Dashboard</h1>
-<form method="get" action="{% url 'buyer_inventory' %}">{% csrf_token %}
-    <button type="submit" class="btn"> Inventory </button>
-</form>
-<form method="get" action="{% url 'buyer_orders' %}">{% csrf_token %}
-    <button type="submit" class="btn"> Orders </button>
-</form>
-<form method="get" action="{% url 'buyer_delivery' %}">{% csrf_token %}
-    <button type="submit" class="btn"> Delivery </button>
-</form>
-<form method="post" action="{% url 'logout' %}">{% csrf_token %}
-    <button type="submit" class="dec"> Déconnexion </button> 
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <h1> Welcome at buyer's Dashboard</h1>
+
+    <div class="dash-main-section">
+        <form method="get" action="{% url 'buyer_inventory' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Inventory </button>
+        </form>
+        <form method="get" action="{% url 'buyer_orders' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Orders </button>
+        </form>
+        <form method="get" action="{% url 'buyer_delivery' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Delivery </button>
+        </form>
+    </div>
+
+    <form class="action-btn" method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button type="submit" class="btn btn-danger"> Déconnexion </button> 
+    </form>
+</body>
+</html>

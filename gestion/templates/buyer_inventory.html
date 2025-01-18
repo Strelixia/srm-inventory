@@ -7,58 +7,54 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    
+    <h1>Products in stock</h1>
     <form method="post" action="">{% csrf_token %}
-    
-        <p><strong> Products in stock </strong></p> 
-            <label for ="product"> Product</label> 
-            <select name="product" id="product" required><br><br>
-                <option value="">Select a product</option>
-                {% for product in products %}
-                <option value="{{ product.id }}">{{ product.name }}</option>
-                {% endfor %}
-            </select>
-
-            <label for ="quantity"> Quantity</label>
-            <input type="number" id="quantity" name="quantity" min="1" required><br><br>
-            <div>
-                <button type="submit" class="btn"> Add product </button>
-            </div>
+        <label for ="product"> Product</label> 
+        <select name="product" id="product" required>
+            <option value="">Select a product</option>
+            {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }}</option>
+            {% endfor %}
+        </select>
+        <label for ="quantity"> Quantity</label>
+        <input type="number" id="quantity" name="quantity" min="1" required>
+        <button type="submit" class="btn btn-primary"> Add product </button>
     </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>User</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for inventory in inventory %}
-                <tr>
-                    <td>{{inventory.product.name}}</td>
-                    <td>{{inventory.quantity}}</td>
-                    <td>{{inventory.user.username}}</td>
-
-                    <td> <form method="post" action="{% url 'delete_inventory' inventory.id %}">{% csrf_token %}
-                        <button type="submit" class="decbtn"> Delete </button> 
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>User</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventory in inventory %}
+            <tr>
+                <td>{{inventory.product.name}}</td>
+                <td>{{inventory.quantity}}</td>
+                <td>{{inventory.user.username}}</td>
+                <td class="action-td">
+                    <form method="post" action="{% url 'delete_inventory' inventory.id %}">{% csrf_token %}
+                        <button type="submit" class="btn btn-danger"> Delete </button> 
                     </form>
-                    </td>
-
-                    <td> <form method="get" action="{% url 'edit_inventory' inventory.id %}">{% csrf_token %}
-                        <button type="submit"> Edit </button> 
+                </td>
+                <td class="action-td">
+                    <form method="get" action="{% url 'edit_inventory' inventory.id %}">{% csrf_token %}
+                        <button type="submit" class="btn"> Edit </button> 
                     </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3">No products available.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</body>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No products available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button type="submit" class="dec"> Déconnexion </button> 
-    </form>      
+        <button type="submit" class="btn btn-danger"> Déconnexion </button> 
+    </form>
+</body>     
 </html>

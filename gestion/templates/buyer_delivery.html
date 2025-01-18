@@ -1,49 +1,59 @@
 {% load static %}
 {% load custom_filters %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<p><strong> ORDERS DELIVERED</strong></p>
-        <form method="get" action="">{% csrf_token %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Delivery_date</th>
-                    <th>Buyer</th>
-                    <th>Supplier</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in delivery_orders %}
-                <tr>
-                    <td>{{order.product.name}}</td>
-                    <td>{{order.quantity}}</td>
-                    <td>{{order.product.price}}USD</td>
-                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
-                    <td>{{order.status}}</td>
-                    <td>{{order.delivery_date}}</td>
-                    <td>{{order.buyer.username}}</td>
-                    <td>{{order.product.supplier.username}}</td>
-                    <td>
-                        <form method="post" action="{% url 'update_inventory' order.id %}">{% csrf_token %}
-                        <button type="submit"> Update </button> 
-                        </form>
-                    </td>
-                
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3">No order available.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Orders delivered</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Delivery_date</th>
+                <th>Buyer</th>
+                <th>Supplier</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in delivery_orders %}
+            <tr>
+                <td>{{order.product.name}}</td>
+                <td>{{order.quantity}}</td>
+                <td>{{order.product.price}}USD</td>
+                <td>{{order.product.price|multiply:order.quantity}} USD</td>
+                <td>{{order.status}}</td>
+                <td>{{order.delivery_date}}</td>
+                <td>{{order.buyer.username}}</td>
+                <td>{{order.product.supplier.username}}</td>
+                <td>
+                    <form method="post" action="{% url 'update_inventory' order.id %}">{% csrf_token %}
+                    <button type="submit" class="btn">Update</button> 
+                    </form>
+                </td>
+            
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No order available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button type="submit" class="dec"> Déconnexion </button> 
+        <button type="submit" class="btn btn-danger"> Déconnexion </button> 
     </form>
+</body>
+</html>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 

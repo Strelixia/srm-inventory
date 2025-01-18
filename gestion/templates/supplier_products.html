@@ -10,25 +10,23 @@
     </div>
     {% endif %}
 <body>
+    <h1>Add a new product</h1> 
     <form method="post" action="">{% csrf_token %}
-    
-        <p><strong> Add a new product </strong></p> 
-            <label for ="name"> Name</label> 
-            <input type="text" id="name" name="name" required><br><br>
+        <label for ="name"> Name</label> 
+        <input type="text" id="name" name="name" required>
 
-            <label for ="description"> Description</label>
-            <textarea id="description" name="description" required></textarea><br><br>
+        <label for ="description"> Description</label>
+        <textarea id="description" name="description" required></textarea>
 
-            <label for ="price"> Price</label>
-            <input type="number" step="0.01"  id="price" name="price" required><br><br>
+        <label for ="price"> Price</label>
+        <input type="number" step="0.01"  id="price" name="price" required>
 
-            <label for ="price"> Quantity</label>
-            <input type="number"  id="quantity" name="quantity" required><br><br>
+        <label for ="price"> Quantity</label>
+        <input type="number"  id="quantity" name="quantity" required>
 
-            <div>
-             <button type="submit" class="btn"> Add product</button>
-            </div>
-        
+        <div>
+            <button type="submit" class="btn btn-primary"> Add product</button>
+        </div>
     </form>
         <table>
             <thead>
@@ -38,6 +36,7 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Supplier</th>
+                    <th colspan="2">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,13 +47,14 @@
                     <td>{{product.price}}</td>
                     <td>{{product.quantity}}</td>
                     <td>{{product.supplier.username}}</td>
-                    <td> <form method="post" action="{% url 'delete_product' product.id %}">{% csrf_token %}
-                            <button type="submit" class="decbtn"> Delete </button> 
+                    <td class="action-td">
+                        <form method="post" action="{% url 'delete_product' product.id %}">{% csrf_token %}
+                            <button type="submit" class="btn btn-danger"> Delete </button> 
                         </form>
                     </td>
-                    <td>
+                    <td class="action-td">
                         <form method="get" action="{% url 'edit_product' product.id %}">{% csrf_token %}
-                            <button type="submit"> Edit </button> 
+                            <button type="submit" class="btn"> Edit </button> 
                         </form> 
                     </td>
                 </tr>  
@@ -66,9 +66,10 @@
 
             </tbody>
         </table>
-</body>
-    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button type="submit" class="dec"> Déconnexion </button> 
-    </form>      
+
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-danger"> Déconnexion </button> 
+        </form> 
+</body>     
 </html>
     
