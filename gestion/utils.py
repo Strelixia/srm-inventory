@@ -7,12 +7,12 @@ def send_email(order, subject, template_name):
                          
     email_html_content = render_to_string(template_name, {
         'order': order,
-        'seller_email': 'maguy.birikomo@gmail.com'
+        'seller_email': buyer_email
     })
     email = EmailMessage(
         subject = subject,
         body = email_html_content,
-        from_email = 'maguy.birikomo@gmail.com',
+        from_email = buyer_email,
         to =  [buyer_email, supplier_email],
     )
     email.content_subtype = "html"
