@@ -16,8 +16,10 @@ urlpatterns = [
     path("add_buyer_orders/", views.buyer_orders, name = "buyer_orders"),
     path("add_supplier_orders/", views.supplier_orders, name = "supplier_orders"),
     path("buyer_payment/<int:order_id>/", views.buyer_payment, name = "buyer_payment"),
-    path("supplier_delivery/", views.supplier_delivery, name = "supplier_delivery"),
-    
+    path("supplier_delivery/<int:order_id>", views.supplier_delivery, name = "supplier_delivery"),
+    path("buyer_delivery/", views.buyer_delivery, name = "buyer_delivery"),
+    path("update_inventory/<int:order_id>", views.update_inventory, name = "update_inventory"),
+    path("delete_order/<int:order_id>", views.delete_order, name = "delete_order"),
 ]
 
 

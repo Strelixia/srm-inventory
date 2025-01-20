@@ -1,22 +1,29 @@
-<h1> Welcome at buyer's Dashboard</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-<form method="post" action=".">{% csrf_token %}
-    <a href="{% url 'buyer_inventory'  %}" class="button"> Inventory </a>
-    <a href="{% url 'buyer_orders'  %}" class="button"> Orders </a>
-    <a href="{% url 'buyer_inventory'  %}" class="button"> Delivery </a>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 
-    <style>
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #2005b5;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin: 5px;
-        }
-    </style>
-           
-</form>
+<body>
+    <h1> Welcome at buyer's Dashboard</h1>
+
+    <div class="dash-main-section">
+        <form method="get" action="{% url 'buyer_inventory' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Inventory </button>
+        </form>
+        <form method="get" action="{% url 'buyer_orders' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Orders </button>
+        </form>
+        <form method="get" action="{% url 'buyer_delivery' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-dark"> Delivery </button>
+        </form>
+    </div>
+
+    <form class="action-btn" method="post" action="{% url 'logout' %}">{% csrf_token %}
+        <button type="submit" class="btn btn-danger"> Déconnexion </button> 
+    </form>
+</body>
+</html>

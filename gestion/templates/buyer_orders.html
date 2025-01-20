@@ -1,17 +1,22 @@
+{% load custom_filters %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title> Orders </title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-
-
+    {% if messages %}   
+        {% for message in messages %}
+        <p class="{{messages.tags}} notification">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <h1>Commande en cours</h1>
     <form method="post" action="">{% csrf_token %}
-    
-        <p><strong> commande en cours </strong></p> 
             <label for ="product"> Product</label> 
-            <select name="product" id="product" required><br><br>
+            <select name="product" id="product" required>
                 <option value="">Select a product</option>
                 {% for product in products %}
                 <option value="{{ product.id }}">{{ product.name }}</option>
@@ -19,10 +24,8 @@
             </select>
 
             <label for ="quantity"> Quantity</label>
-            <input type="number" id="quantity" name="quantity" min="1" required><br><br>
-            <div>
-                <button type="submit"> Add order </button>
-            </div>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+            <button type="submit" class="btn btn-primary"> Add order </button>
     </form>
         <table>
             <thead>
@@ -33,6 +36,7 @@
                     <th>Order_date</th>
                     <th>Buyer</th>
                     <th>Supplier</th>
+                    <th colspan="2">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,20 +50,26 @@
                     <td>{{order.product.supplier.username}}</td>
                     <td>
                         <form method="get" action="{% url 'buyer_payment' order.id %}">{% csrf_token %} 
-                            <button type="submit"> Payment </button> 
+                            <button type="submit" class="btn"> Payment </button> 
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'delete_order' order.id %}">{% csrf_token %} 
+                            <button type="submit" class="btn btn-danger"> Delete order</button> 
                         </form>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="3">No order available.</td>
+                    <td colspan="6">No order available.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </form>
 
-        <p><strong> commande déjà payé </strong></p>
-        <form method="get" action="">{% csrf_token %}
+    <h1>Commandes Payées</h1>
+    <form method="get" action="">{% csrf_token %}
         <table>
             <thead>
                 <tr>
@@ -78,59 +88,24 @@
                 <tr>
                     <td>{{order.product.name}}</td>
                     <td>{{order.quantity}}</td>
-                    <td>{{order.product.price}}</td>
-                    <td>{{order.payment.amount}}</td>
+                    <td>{{order.product.price}} USD</td>
+                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
                     <td>{{order.status}}</td>
-                    <td>{{order.payment.payment_date}}</td>
+                    <td>{{order.payment_date}}</td>
                     <td>{{order.buyer.username}}</td>
                     <td>{{order.product.supplier.username}}</td>
                 
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="3">No order paid.</td>
+                    <td colspan="8">No order paid.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        </form>
-</body>
+    </form>
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button type="submit"> Déconnexion </button> 
-    </form>      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <button type="submit" class="btn btn-danger"> Déconnexion </button> 
+    </form> 
+</body>
 </html>
-    
-
-    <style>
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4f4f58;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin: 5px;
-        }   
-        table {
-            display: table;
-            background-color: rgb(28, 129, 156);
-            border: 10;
-        }
-    </style>

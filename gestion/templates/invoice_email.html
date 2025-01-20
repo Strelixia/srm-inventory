@@ -1,0 +1,38 @@
+{% load custom_filters %}
+<html>
+    <head>
+        <title>Votre facture</title>
+    </head>
+    <body>
+        <h1>Merci pour votre achat</h1>
+        <p>Voici les détails de votre commande</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Payment_date</th>
+                    <th>Buyer</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{order.product.name}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.product.price}} USD</td>
+                    <td>{{order.product.price|multiply:order.quantity}} USD</td>
+                    <td>{{order.payment_date}}</td>
+                    <td>{{order.buyer.username}}</td>
+                    <td>{{order.product.supplier.username}}</td>
+                
+                </tr>
+            
+            </tbody>
+        </table>
+        <p> Nous vous livrerons vos articles sous peu, merci pour votre confiance</p>
+        <p>Pour toute question, contactez nous à </p>
+    </body>
+</html>

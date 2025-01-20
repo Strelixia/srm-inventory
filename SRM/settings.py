@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -119,9 +120,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'gestion/static/'
+STATICFILES_DIRS =[ BASE_DIR /'gestion/static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND =config('EMAIL_BACKEND', default = 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default = 'localhost')
+EMAIL_PORT =  config('EMAIL_PORT', cast = int, default = 25)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default = '')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default = '')
+DEFAULT_FROM_EMAIL =config('DEFAULT_FROM_EMAIL', default = 'webmaster@localhost')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
