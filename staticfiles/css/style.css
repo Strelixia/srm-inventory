@@ -36,8 +36,14 @@ label{
 body{
     background-color: rgb(244, 242, 249);
     width: 90%;
+    min-height: 100vh;
+    box-sizing: border-box;
     margin: auto;
     padding-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn {
@@ -79,10 +85,6 @@ input, select {
     margin-bottom: 10px;
 }
 
-.login-form {
-    width: 40%;
-}
-
 .action-td form {
     padding: 0;
     margin: 0;
@@ -94,6 +96,7 @@ input, select {
 
 .notification{
     padding: 5px 10px;
+    margin: 0;
     border: 0.5px solid slategray;
     background-color: beige; 
     width: fit-content;
