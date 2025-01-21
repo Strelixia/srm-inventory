@@ -1,21 +1,25 @@
-    {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% if messages %}   
+        {% for message in messages %}
+        <p class="{{messages.tags}} notification">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
     <h1> Se connecter</h1>
-{% if error %}
-<p><strong> User doesn't exist or false password</strong></p>
-{% endif %}
-{% if user.is_authentificated %} you are connected,{{user.username}}
-{% else %}
-<form class="login-form" method="post" action=".">{% csrf_token %}
-    <label for ="username"> Username</label>
-    <input type="text" name="username" required>
-    <label for ="password"> Password</label>
-    <input type="password" name="password" required>
-    <button type="submit" class="btn btn-primary"> Connexion </button>
-</form>
-{% endif %}
-
-
-
-
-
+    <form class="login-form" method="post" action=".">{% csrf_token %}
+        <label for ="username"> Username</label>
+        <input type="text" name="username" required>
+        <label for ="password"> Password</label>
+        <input type="password" name="password" required>
+        <button type="submit" class="btn btn-primary"> Connexion </button>
+    </form>
+</body>
+</html>

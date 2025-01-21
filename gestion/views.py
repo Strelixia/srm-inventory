@@ -18,10 +18,7 @@ def home(request):
     return render(request, 'home.html')
 
 def login_view(request):
-    if request.method == 'GET':
-        return render(request, 'login.html')
-    
-    elif request.method == 'POST':
+    if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
@@ -30,12 +27,19 @@ def login_view(request):
             login (request, user)
             
             if user.role == 'Supplier':
-                return redirect( 'supplier_dashboard')
+                return redirect('supplier_dashboard')
             elif user.role == 'Buyer':
-                return redirect( 'buyer_dashboard')
+                return redirect('buyer_dashboard')
+        else:
+            messages.error(request, "Invalid Credentials")
+            return redirect('login')
+    
+    if request.user.is_authenticated:
+        if request.user.role == 'Supplier':
+            return redirect('supplier_dashboard')
+        elif request.user.role == 'Buyer':
+            return redirect('buyer_dashboard')
         
-        else: 
-            return render(request,'login.html',{'error': 'invalid username or password'})
     return render(request, 'login.html')
 
 def role_required(role):
