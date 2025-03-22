@@ -1,18 +1,21 @@
+{% extends "base.html" %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<form method ="post" action="">
-    <h1>Delivery</h1>
-    <div>
-        <p>Product name : {{order.product.name}}</p>
-        <p>Quantity : {{order.quantity}}</p>
-        <p>Price : {{order.product.price}}</p>
-        <p>Status : {{order.status}}</p>
-        <p>Date : {{order.order_date}}</p>
-    </div>
-    <form method="get" action="{% url 'supplier_orders' %}">{% csrf_token %} 
-        <button type="submit" class="btn btn-primary"> Validation </button> 
+{% block title %}Deliveries{% endblock %}
+{% block content %}
+    <form method ="post" action="">
+        <h1>Delivery</h1>
+        <div>
+            <p>Product name : {{order.product.name}}</p>
+            <p>Quantity : {{order.quantity}}</p>
+            <p>Price : {{order.product.price}}</p>
+            <p>Status : {{order.status}}</p>
+            <p>Date : {{order.order_date}}</p>
+        </div>
+        <form method="get" action="{% url 'supplier_orders' %}">{% csrf_token %} 
+            <button type="submit" class="btn btn-primary"> Validation </button> 
+        </form>
     </form>
-</form>
+{% endblock %}
 
 
 

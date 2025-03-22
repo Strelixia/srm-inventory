@@ -1,13 +1,8 @@
+{% extends "base.html" %}
 {% load static %}
 {% load custom_filters %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <meta charset="UTF-8">
-    <title> Orders </title>
-</head>
-<body>
+{% block title %}Orders{% endblock %}
+{% block content %}
     <h1>Commande en cours </h1> 
     <table>
         <thead>
@@ -85,6 +80,5 @@
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit" class="btn btn-danger"> Déconnexion </button> 
     </form>
-</body>      
-</html>
+{% endblock %}
     

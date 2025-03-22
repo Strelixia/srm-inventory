@@ -1,16 +1,8 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
-
-<body>
+{% block title %}Dashboard{% endblock %}
+{% block content %}
     <h1> Welcome at buyer's Dashboard</h1>
-
     <div class="dash-main-section">
         <form method="get" action="{% url 'buyer_inventory' %}">{% csrf_token %}
             <button type="submit" class="btn btn-dark"> Inventory </button>
@@ -22,9 +14,7 @@
             <button type="submit" class="btn btn-dark"> Delivery </button>
         </form>
     </div>
-
     <form class="action-btn" method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit" class="btn btn-danger"> Déconnexion </button> 
     </form>
-</body>
-</html>
+{% endblock %}

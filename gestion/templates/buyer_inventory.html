@@ -1,12 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title> Liste des produits</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% block title %}Inventory{% endblock %}
+{% block content %}
     <h1>Products in stock</h1>
     <form method="post" action="">{% csrf_token %}
         <label for ="product"> Product</label> 
@@ -56,5 +51,4 @@
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit" class="btn btn-danger"> Déconnexion </button> 
     </form>
-</body>     
-</html>
+{% endblock %}

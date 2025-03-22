@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>{% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <meta charset="UTF-8">
-    <title> Liste des produits</title>
-</head>
-    {% if error_message %}
-    <div class="alert alert-danger">{{ error_message}}
-    </div>
-    {% endif %}
-<body>
+{% load static %}
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
     <h1>Add a new product</h1> 
     <form method="post" action="">{% csrf_token %}
         <label for ="name"> Name</label> 
@@ -70,6 +62,5 @@
         <form method="post" action="{% url 'logout' %}">{% csrf_token %}
             <button type="submit" class="btn btn-danger"> Déconnexion </button> 
         </form> 
-</body>     
-</html>
+{% endblock %}
     

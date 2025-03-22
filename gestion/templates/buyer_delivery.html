@@ -1,15 +1,9 @@
+{% extends "base.html" %}
 {% load static %}
 {% load custom_filters %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% block title %}Delivery{% endblock %}
+{% block content %}
     <h1>Orders delivered</h1>
-
     <table>
         <thead>
             <tr>
@@ -40,7 +34,6 @@
                     <button type="submit" class="btn">Update</button> 
                     </form>
                 </td>
-            
             </tr>
             {% empty %}
             <tr>
@@ -49,11 +42,8 @@
             {% endfor %}
         </tbody>
     </table>
-
     <form method="post" action="{% url 'logout' %}">{% csrf_token %}
         <button type="submit" class="btn btn-danger"> Déconnexion </button> 
     </form>
-</body>
-</html>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
 

@@ -1,11 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
-<html>
-    <head>
-        <title>Bon de livraison</title>
-        <script src ="https://js.stripe.com/v3/"></script>
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    </head>
-    <body>
+{% block title %}Payment{% endblock %}
+{% block content %}
     <h1>Proceed to payment</h1>
     <div>
         <p>Product name : {{order.product.name}}</p>
@@ -30,14 +26,13 @@
                     fontFamily:'"Helvetica Neue", Helvetica, sans-serif',
                     fontSmoothing:"antialiased",
                     fontSize:"16px", "::placeholder":{color:"#aab7c4"}
-
-                    },
+                },
                 invalid:{ 
                     color: "#fa755a",
                     iconColor: "#fa755a",
-                     }
-                    }
-            });
+                }
+            }
+        });
         card.mount("#card-element");
 
         card.on("change", function(events){
@@ -72,5 +67,4 @@
         }
         });
     </script>
-    </body>
-</html>    
+{% endblock %}
